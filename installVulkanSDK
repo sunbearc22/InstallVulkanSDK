@@ -1,0 +1,76 @@
+#!/bin/bash
+
+# This is a script to install VulkanSDK in Ubuntu
+# Author     : sunbearc22
+# Created on : 2017-10-5
+
+echo
+echo "============================================================"
+echo "Program to locally install VulkanSDK in "$USER"'s directory."
+echo "============================================================"
+echo "Enter the version (e.g. 1.0.61.1) to be installed and press [ENTER]:"
+read version
+echo "Specify the Vulkan directory and path (e.g. ~/Vulkan) and press [ENTER]:"
+read vpath
+vpath="${vpath/#\~/$HOME}" #convert ~ to $HOME if ~ exist
+dlpath="$HOME/Downloads/"
+filename="vulkansdk-linux-x86_64-$version.run"
+url="https://vulkan.lunarg.com/sdk/download/$version/linux/$filename?Human=true"
+echo
+echo "version  = " $version
+echo "vpath    = " $vpath
+echo "dlpath   = " $dlpath
+echo "filename = " $filename
+echo "url      = " $url
+
+echo
+echo Step 1. Update and Upgrade System Packages
+sudo apt-get update
+sudo apt-get dist-upgrade
+
+echo
+echo Step2. Install Prerequisite Packages.
+sudo apt-get install libglm-dev graphviz libxcb-dri3-0 libxcb-present0 libpciaccess0 cmake \
+libpng-dev libxcb-dri3-dev libx11-dev libmirclient-dev libwayland-dev libxrandr-dev
+
+echo
+echo Step 3. Download Vulkan SDK Installer
+wget $url -O $dlpath$filename
+
+echo
+echo Step 4. Set up Vulkan folder & Installer
+mkdir -p $vpath        #Create Vulkan directory if it doesn't exist
+cd $vpath              #Goto Vulkan directory
+cp $dlpath$filename ./ #Copy SDK to Vulkan directory
+chmod ugo+x $filename  #Make SDK file executable 
+
+echo
+echo Step 5. Installing Vulkan SDK
+./$filename
+
+echo
+echo Step 6. Set up SDK Runtime Environment
+cd VulkanSDK/$version
+source setup-env.sh
+
+echo
+echo Step 7. Verify Vulkan SDK Installation is successful.
+./x86_64/bin/vulkaninfo
+
+echo
+echo Step 8. Build Vulkan examples and samples.
+./build_examples.sh
+./build_samples.sh
+
+echo
+echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+echo "Vulkan SDK $version Installed!"
+echo 
+echo "For a detailed verification that installation is successful,"
+echo "VIA is needed. To do this, you have to sequentially execute"
+echo "files:" 
+echo "   build_tools.sh"
+echo "   x86_64/bin/via"
+echo "Note this procedure can take sometime."
+echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+
