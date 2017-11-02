@@ -14,6 +14,6 @@ Tested on Ubuntu 16.04.3 with linux kernel 4.10.0-33-generic and 4.10.0-38-gener
    - The full path of your Vulkan directory, e.g. `~/Vulkan` or `~/New/Directory/Vulkan`. If the directory/directories does/do not exist, the script will create it/them.
 2. Run script with command `./installVulkanSDK`.
 
-Note: Version uploaded on 2017-11-3 installs the SDK, builds the examples, samples and tools and also performs via. 
-      The entire building process can take a bit of time so you need to have some patience.   
+_Note: Version uploaded on 2017-11-3 installs the SDK, builds the examples, samples and tools and also performs via. 
+      The entire building process can take a bit of time so you need to have some patience. 2 to 3 minutes on my system. It can take longer when internet download speed and/or CPU speed slows._
       
