@@ -1,9 +1,12 @@
 #!/bin/bash
 
-# This is a script to install LunarG's VulkanSDK in Ubuntu 16.04.3
-# Author      : sunbearc22
-# Created on  : 2017-10-5
-# Modified on : 2017-11-3  
+# This is a bash script to install VulkanSDK in Ubuntu 16.04.
+# Author     : sunbearc22
+# Created on : 2017-10-5
+# Modified on: 2018-07-14
+# Remarks    : Installation of these VulkanSDK versions on Ubuntu 16.04 have been verified.    
+#               1.0.68.0   1.0.65.0   1.0.61.0   1.0.57.0   1.0.54.0   1.0.51.0           
+#               1.1.77.0   1.1.73.0   1.1.70.0   
 
 echo
 echo "============================================================"
@@ -15,8 +18,17 @@ echo "Specify the Vulkan directory and path (e.g. ~/Vulkan) and press [ENTER]:"
 read vpath
 vpath="${vpath/#\~/$HOME}" #convert ~ to $HOME if ~ exist
 dlpath="$HOME/Downloads/"
+
+if [ $version = "1.1.77.0" ]
+then
+echo "1.1.77.0"
+filename="vulkansdk-linux-x86_64-$version.tar.gz"
+url="https://vulkan.lunarg.com/sdk/home#sdk/downloadConfirm/$version/linux/$filename?Human=true"
+else
 filename="vulkansdk-linux-x86_64-$version.run"
 url="https://vulkan.lunarg.com/sdk/download/$version/linux/$filename?Human=true"
+fi
+
 echo
 echo "version  = " $version
 echo "vpath    = " $vpath
@@ -25,58 +37,71 @@ echo "filename = " $filename
 echo "url      = " $url
 
 echo
-echo "Step 1. Update and Upgrade System Packages"
-sudo apt update
-sudo apt dist-upgrade
+echo Step 1. Update and Upgrade System Packages
+sudo apt-get update
+sudo apt-get dist-upgrade
 
 echo
-echo "Step2. Install Prerequisite Packages."
-sudo apt install libglm-dev graphviz libxcb-dri3-0 libxcb-present0 libpciaccess0 cmake \
-libpng-dev libxcb-dri3-dev libx11-dev libmirclient-dev libwayland-dev libxrandr-dev
-#Packages to build shaderc
-sudo apt install git libpython2.7
+echo Step2. Install Prerequisite Packages.
+sudo apt-get install libglm-dev cmake libxcb-dri3-0 libxcb-present0 libpciaccess0 \
+libpng-dev libxcb-keysyms1-dev libxcb-dri3-dev libx11-dev \
+libmirclient-dev libwayland-dev libxrandr-dev graphviz git libpython2.7
+
 echo
-echo "Step 3. Download Vulkan SDK Installer"
+echo Step 3. Download Vulkan SDK Installer
 wget $url -O $dlpath$filename
 
 echo
-echo "Step 4. Set up Vulkan folder & Installer"
+echo Step 4. Set up Vulkan folder and Installer
 mkdir -p $vpath        #Create Vulkan directory if it doesn't exist
 cd $vpath              #Goto Vulkan directory
-cp $dlpath$filename ./ #Copy SDK to Vulkan directory
+mv $dlpath$filename ./ #Move SDK to Vulkan directory
 chmod ugo+x $filename  #Make SDK file executable 
 
 echo
-echo "Step 5. Installing Vulkan SDK"
+echo Step 5. Installing Vulkan SDK
+if [ $version = "1.1.77.0" ]
+then
+mkdir -p VulkanSDK
+tar xf $dlpath/$filename -C VulkanSDK/
+else
 ./$filename
+fi
 
 echo
-echo "Step 6. Set up SDK Runtime Environment"
-cd VulkanSDK/$version/
+echo Step 6. Set up SDK Runtime Environment
+cd VulkanSDK/$version
 source setup-env.sh
 
 echo
-echo "Step 7. Verify Vulkan SDK Installation is successful."
-#./x86_64/bin/vulkaninfo
-vulkaninfo
+echo Step 7. Simple Verification of Vulkan SDK Installation.
+./x86_64/bin/vulkaninfo
 
 echo
-echo "Step 8. Build Vulkan examples, samples and tools."
-./build_examples.sh
-./build_samples.sh
+echo Step 8. Build Vulkan tools.
 ./build_tools.sh
 
 echo
-echo "Step 9. Validate Vulkan Installation."
-via
+echo Step 9. Build Vulkan examples.
+./build_examples.sh
 
 echo
-echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-echo "Vulkan SDK $version Installed!"
-echo "Location: " $vpath"/VulkanSDK/"$version"/"
+echo Step 10. Build Vulkan samples.
+./build_samples.sh
+
+echo
+echo Step 11. Verifiy Vulkan SDK Installation.
+./x86_64/bin/via
+
+echo
+echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+echo "                   End of installVulkanSDK."
+echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 echo 
-echo "To uninstall VulkanSDK, goto "$vpath
-echo "and type 'rm -rf VulkanSDK' "
-echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-
-
+echo " Please manually vet through the build statements for warnings"
+echo " and errors. Their absence verifies that:"
+echo "  - Vulkan SDK $version and its tools, examples and samples"
+echo "    have been built and installed succesfully."
+echo 
+echo "             Enjoy the power of VULKAN $version."
+echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
