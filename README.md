@@ -3,10 +3,12 @@ Bash script to install LunarG's Vulkan SDK.
 
 Tested on Ubuntu 16.04.3 with linux kernel 4.10.0-42-generic, 4.10.0-38-generic, and 4.10.0-33-generic.
 
-Works for SDKs:
+Works with SDKs:
   
-  `1.0.68.0`  `1.0.65.0`  `1.0.61.0`  `1.0.57.0`  `1.0.54.0`  `1.0.51.0`           
-  `1.1.77.0`  `1.1.73.0`  `1.1.70.0`   
+  `1.1.77.0`  `1.1.73.0`  `1.1.70.0`
+  
+  `1.0.68.0`  `1.0.65.0`  `1.0.61.0`  `1.0.57.0`  `1.0.54.0`  `1.0.51.0`  `1.0.49.0`   `1.0.46.0`   `1.0.42.2`   `1.0.39.1`   `1.0.39.0`               
+  
 
 ## Preliminaries
 1. Download InstallVulkanSDK to your Ubuntu system.
@@ -24,4 +26,3 @@ Works for SDKs:
 _Note: This bash scipt will install the Vulkan SDK, as well as builds it's examples, samples and tools, and also performs via. 
       The entire building process can take a bit of time so you need to have some patience. 2 to 3 minutes on my system. 
       It can take longer when internet download speed and/or CPU speed slows._
-      
