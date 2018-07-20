@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This is a bash script to install VulkanSDK in Ubuntu 16.04.
+# This is a bash script to install VulkanSDK in Ubuntu 16.04
 # Author     : sunbearc22
 # Created on : 2017-10-5
 # Modified on: 2018-07-14
@@ -9,7 +9,7 @@
 #
 #               1.0.68.0   1.0.65.0   1.0.61.0   1.0.57.0   1.0.54.0   1.0.51.0   1.0.49.0   
 #               1.0.46.0   1.0.42.2   1.0.39.1   1.0.39.0    
-
+	
 echo
 echo "============================================================"
 echo "Program to locally install VulkanSDK in "$USER"'s directory."
@@ -19,22 +19,18 @@ read version
 echo "Specify the Vulkan directory and path (e.g. ~/Vulkan) and press [ENTER]:"
 read vpath
 vpath="${vpath/#\~/$HOME}" #convert ~ to $HOME if ~ exist
-dlpath="$HOME/Downloads/"
 
-if [ $version = "1.1.77.0" ]
-then
-echo "1.1.77.0"
-filename="vulkansdk-linux-x86_64-$version.tar.gz"
-url="https://vulkan.lunarg.com/sdk/home#sdk/downloadConfirm/$version/linux/$filename?Human=true"
+if [ $version = "1.1.77.0" ]; then
+    echo "1.1.77.0"
+    filename="vulkansdk-linux-x86_64-$version.tar.gz"
 else
-filename="vulkansdk-linux-x86_64-$version.run"
-url="https://vulkan.lunarg.com/sdk/download/$version/linux/$filename?Human=true"
+    filename="vulkansdk-linux-x86_64-$version.run"
 fi
+url="https://vulkan.lunarg.com/sdk/download/$version/linux/$filename?Human=true"
 
 echo
 echo "version  = " $version
 echo "vpath    = " $vpath
-echo "dlpath   = " $dlpath
 echo "filename = " $filename
 echo "url      = " $url
 
@@ -50,50 +46,53 @@ libpng-dev libxcb-keysyms1-dev libxcb-dri3-dev libx11-dev \
 libmirclient-dev libwayland-dev libxrandr-dev graphviz git libpython2.7
 
 echo
-echo Step 3. Download Vulkan SDK Installer
-wget $url -O $dlpath$filename
-
-echo
-echo Step 4. Set up Vulkan folder and Installer
-mkdir -p $vpath        #Create Vulkan directory if it doesn't exist
-cd $vpath              #Goto Vulkan directory
-mv $dlpath$filename ./ #Move SDK to Vulkan directory
-chmod ugo+x $filename  #Make SDK file executable 
-
-echo
-echo Step 5. Installing Vulkan SDK
-if [ $version = "1.1.77.0" ]
-then
-mkdir -p VulkanSDK
-tar xf $dlpath/$filename -C VulkanSDK/
+echo Step 3. Download Vulkan SDK Installer to $vpath
+if [ ! -f $vpath/$filename ]; then
+    wget $url -O $vpath/$filename
 else
-./$filename
+    echo "$vpath/$filename exist. Download of VulkanSDK is not required."
 fi
 
 echo
+echo Step 4. Installing Vulkan SDK
+if [ $version = "1.1.77.0" ]; then
+    mkdir -p $vpath/VulkanSDK
+    tar xf $vpath/$filename -C $vpath/VulkanSDK
+else
+    chmod ugo+x $vpath/$filename  #Make SDK file executable 
+    $vpath/$filename
+fi
+
+echo
+echo Step 5. Goto VulkanSDK version directory
+echo $vpath/VulkanSDK/$version/
+cd $vpath/VulkanSDK/$version/
+ls 
+
+echo
 echo Step 6. Set up SDK Runtime Environment
-cd VulkanSDK/$version
-source setup-env.sh
+source $vpath/VulkanSDK/$version/setup-env.sh
 
 echo
 echo Step 7. Simple Verification of Vulkan SDK Installation.
 ./x86_64/bin/vulkaninfo
 
 echo
-echo Step 8. Build Vulkan tools.
-./build_tools.sh
-
-echo
-echo Step 9. Build Vulkan examples.
+echo Step 8. Build Vulkan examples.
 ./build_examples.sh
 
 echo
-echo Step 10. Build Vulkan samples.
+echo Step 9. Build Vulkan samples.
 ./build_samples.sh
+
+echo
+echo Step 10. Build Vulkan tools.
+./build_tools.sh
 
 echo
 echo Step 11. Verifiy Vulkan SDK Installation.
 ./x86_64/bin/via
+
 
 echo
 echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
@@ -107,3 +106,4 @@ echo "    have been built and installed succesfully."
 echo 
 echo "             Enjoy the power of VULKAN $version."
 echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+
