@@ -21,8 +21,8 @@ Works with SDKs:
    - The SDK version number you want to install, e.g. `1.0.61.1`.
    - The full path of your Vulkan directory, e.g. `~/Vulkan` or `~/New/Directory/Vulkan`. 
      If the directory/directories does/do not exist, the script will create it/them.
-2. Run script with command `./installVulkanSDK`.
+2. Source script with command `source installVulkanSDK`.
 
-_Note: This bash scipt will install the Vulkan SDK, as well as builds it's examples, samples and tools, and also performs via. 
+_Note: This bash scipt will install LunarG Vulkan SDK, as well as builds it's examples, samples and tools, and also performs via. 
       The entire building process can take a bit of time so you need to have some patience. 2 to 3 minutes on my system. 
       It can take longer when internet download speed and/or CPU speed slows._
