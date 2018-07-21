@@ -26,3 +26,9 @@ Works with SDKs:
 _Note: This bash scipt will install LunarG Vulkan SDK, as well as builds it's examples, samples and tools, and also performs via. 
       The entire building process can take a bit of time so you need to have some patience. 2 to 3 minutes on my system. 
       It can take longer when internet download speed and/or CPU speed slows._
+
+## Runtime Environment Settings
+### During Installation: 
+Three new environment variables `VULKAN_SDK`, `LD_LIBRARY_PATH`, `VK_LAYER_PATH` will be created to your environment. These are described in LunarG VulkanSDK documentation. 
+
+**Note: `VULKAN_SDK` will be appended to your `PATH` environment each time you run this script. In the event you run this script multiple time, there will be multiple `VULKAN_SDK` paths added to your environment. I have not included an alogorithm to avoid this situation. You have to use Linux `export` command to manage `PATH`.**
