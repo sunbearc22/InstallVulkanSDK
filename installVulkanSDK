@@ -3,9 +3,9 @@
 # This is a bash script to install LunarG VulkanSDK in Ubuntu 16.04.
 # Author     : sunbearc22
 # Created on : 2017-10-5
-# Modified on: 2018-07-21
-# Remarks    : Installation of these VulkanSDK versions on Ubuntu 16.04 have been verified.    
-#               1.1.77.0   1.1.73.0   1.1.70.0   
+# Modified on: 2018-07-24
+# Remarks    : Vulkan Installation Analyzer (VIA) returned Successful.    
+#               1.1.77.0   1.1.73.0   1.1.70.1*   1.1.70.0
 #
 #               1.0.68.0   1.0.65.0   1.0.61.0   1.0.57.0   1.0.54.0   1.0.51.0   1.0.49.0   
 #               1.0.46.0   1.0.42.2   1.0.39.1   1.0.39.0    
@@ -22,13 +22,14 @@ vpath="${vpath/#\~/$HOME}" #convert ~ to $HOME if ~ exist
 
 if [ $version = "1.1.77.0" ]; then
     echo "1.1.77.0"
-    filename="vulkansdk-linux-x86_64-$version.tar.gz"
+    filename="vulkansdk-linux-$version.tar.gz"
 else
-    filename="vulkansdk-linux-x86_64-$version.run"
+    filename="vulkansdk-linux-$version.run"
 fi
-url="https://vulkan.lunarg.com/sdk/download/$version/linux/$filename?Human=true"
+url="https://sdk.lunarg.com/sdk/download/$version/linux/$filename?Human=true"
 
-echo
+oldPATH=$PATH  #backup PATH variable
+
 echo "version  = " $version
 echo "vpath    = " $vpath
 echo "filename = " $filename
@@ -36,18 +37,19 @@ echo "url      = " $url
 echo "oldPATH  = " $oldPATH
 
 echo
-echo Step 1. Update and Upgrade System Packages.
+echo "Step 1. Update and Upgrade System Packages."
 sudo apt-get update
 sudo apt-get dist-upgrade
 
 echo
-echo Step2. Install Prerequisite Packages.
+echo "Step2. Install Prerequisite Packages."
 sudo apt-get install libglm-dev cmake libxcb-dri3-0 libxcb-present0 libpciaccess0 \
-libpng-dev libxcb-keysyms1-dev libxcb-dri3-dev libx11-dev \
-libmirclient-dev libwayland-dev libxrandr-dev graphviz git libpython2.7
+libpng-dev libxcb-keysyms1-dev libxcb-dri3-dev libxrandr-dev \
+libx11-dev libxcb1-dev libxkbcommon-dev libmirclient-dev libwayland-dev \
+graphviz git libpython2.7
 
 echo
-echo Step 3. Download Vulkan SDK Installer to $vpath.
+echo "Step 3. Download Vulkan SDK Installer to $vpath."
 if [ ! -f $vpath/$filename ]; then
     wget $url -O $vpath/$filename
 else
@@ -55,7 +57,7 @@ else
 fi
 
 echo
-echo Step 4. Install LunarG VulkanSDK.
+echo "Step 4. Install LunarG VulkanSDK."
 if [ $version = "1.1.77.0" ]; then
     echo "1.1.77.0"
     mkdir -p $vpath/VulkanSDK
@@ -71,28 +73,28 @@ else
 fi
 
 echo
-echo Step 5. Setup Vulkan Runtime Environment.
+echo "Step 5. Setup Vulkan Runtime Environment."
 source $vpath/VulkanSDK/$version/setup-env.sh  #export Vulkan environment variables
-unset version vpath filename url               #remove bash script environment variables
+export PATH="$VULKAN_SDK/bin:$oldPATH"
 
 echo
-echo Step 6. Simple Verification of Vulkan SDK Installation.
+echo "Step 6. Simple Verification of Vulkan SDK Installation."
 ./x86_64/bin/vulkaninfo
 
 echo
-echo Step 7. Build Vulkan examples.
+echo "Step 7. Build Vulkan examples."
 ./build_examples.sh
 
 echo
-echo Step 8. Build Vulkan samples.
+echo "Step 8. Build Vulkan samples."
 ./build_samples.sh
 
 echo
-echo Step 9. Build Vulkan tools.
+echo "Step 9. Build Vulkan tools."
 ./build_tools.sh
 
 echo
-echo Step 10. Run Vulkan Installation Analyzer.
+echo "Step 10. Run Vulkan Installation Analyzer."
 ./x86_64/bin/via
 
 echo
@@ -107,3 +109,6 @@ echo "    have been built and installed succesfully."
 echo 
 echo "             Enjoy the power of VULKAN $version."
 echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+
+unset version vpath filename url #remove local environment variables
+#Note env variable oldPATH is not deleted.
