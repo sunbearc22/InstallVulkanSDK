@@ -16,7 +16,7 @@ Works with SDK versions:
 
 
 ## Preliminaries
-1. Download `InstallVulkanSDK` to your Ubuntu system.
+1. Clone/Download `InstallVulkanSDK` to your Ubuntu system.
 
 ## Install LunarG's Vulkan SDK
 1. You need to decide on these user inputs before running *installVulkanSDK.py*: 
