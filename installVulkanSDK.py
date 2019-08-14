@@ -165,9 +165,7 @@ def get_SDK():
     
 
 def download_sdk( url, installerfullname ):
-    print( f'Process {os.getpid()} {threading.current_thread()} Downloading SDK...' )
-    print( f'url = {url}')
-    print( f'installerfullname = {installerfullname}')
+    print( f'\nProcess {os.getpid()} {threading.current_thread()} Downloading SDK...' )
     r = requests.get( url )
     #response less than 400 response, open in binary mode and write sdk to user defined vulkan directory
     if r.ok: 
@@ -197,9 +195,9 @@ def call_subprocess_Popen( cmd, cwd=None ):
                            as result:
         for line in result.stdout:
             print( line, end='' )
-    if result.returncode != 0:
         for line in result.stderr:
             print( line, end='' )
+    if result.returncode != 0:
         raise subprocess.CalledProcessError( result.returncode, result.args )
     else:
         return True
@@ -272,10 +270,10 @@ def show_end_notice():
     folder = VDIR / 'VulkanSDK' / VERSION # SDK Directory
     print()
     print( f"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-    print( f"                   End of installVulkanSDK.")
+    print( f"                   End of installVulkanSDK.py")
     print( f"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
     print() 
-    print( f" 1. To uninstall the SDK simply remove your local installation\n"\
+    print( f" 1. To uninstall the SDK, simply remove your local installation\n"\
 	   f"    directory. e.g.\n"\
            f"     rm -rf {folder}\n" )
     print( f" 2. Set up the runtime environment by issuing this command:\n"\
@@ -300,12 +298,10 @@ def main():
     get_global()
     get_PERMISSION()
     if PERMISSION:
-        print( f'PERMISSION = {PERMISSION}' )
         get_sdk = get_SDK()
-        print( f'get_sdk = {get_sdk}' )
+        start = time.time()
         if get_sdk:
             #print( '### Get SDK and get and setup packages.' )
-            start = time.time()
             with cf.ThreadPoolExecutor(max_workers=3) as executor:
             #with cf.ProcessPoolExecutor(max_workers=3) as executor:
                 futures = [ executor.submit( functools.partial( download_sdk, IURL, IFULLNAME ) ),
@@ -318,7 +314,6 @@ def main():
             end = time.time()
         else:
             #print( '### Get and setup packages.' )
-            start = time.time()
             setup_system_and_prerequisite_packages()
             print( f'\nSystem pkgs and Vulkan prerequisite pkgs setup = True.' )
             end = time.time()
@@ -339,5 +334,3 @@ if __name__ == '__main__':
         main()
     except KeyboardInterrupt:
         sys.exit( print( f'\nQuit: {USERNAME} terminated program.' ) )
-
-
