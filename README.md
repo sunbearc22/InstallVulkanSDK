@@ -16,7 +16,7 @@ Tested on Ubuntu 18.04 with linux kernel (5.0.0-23-generic to 5.3.0-53-generic) 
 
 
 ## Preliminary
-1. Clone/Download `InstallVulkanSDK` to your Ubuntu system. You need to use the python script `installVulkanSDK.py` to perform the installation.
+Clone/Download `InstallVulkanSDK` to your Ubuntu system. You need to use the python script `installVulkanSDK.py` to perform the installation.
 
 ## Install LunarG Vulkan SDK
 1. You need to decide on these user inputs before running *installVulkanSDK.py*: 
