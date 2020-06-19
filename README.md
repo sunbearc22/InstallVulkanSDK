@@ -1,7 +1,7 @@
 # InstallVulkanSDK
 A Python 3.6 script to install LunarG Vulkan SDK in Ubuntu 18.04.
 
-Tested on Ubuntu 18.04 with linux kernel 5.0.0-23-generic and with Vulkan SDK versions:
+Tested on Ubuntu 18.04 with linux kernel (5.0.0-23-generic to 5.3.0-53-generic) and with Vulkan SDK versions:
   
  `1.2.141.2`, `1.2.135.0`, `1.2.131.2`, `1.2.131.1`,
  `1.1.130.0`, `1.1.126.0`, `1.1.121.1`, `1.1.114.0`, `1.1.108.0`,
