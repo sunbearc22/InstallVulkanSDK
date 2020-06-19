@@ -30,10 +30,10 @@ _Note_: This Python 3.6 script will install all the prerequisite packages outlin
 
 ## Runtime Environment Settings
 You need to "Set up the runtime environment" as stated in LunarG's Vulkan documentation, e.g. 
-`source ~/NewVulkanDirectory/VulkanSDK/1.1.xx.y/setup-env.sh`.  
+`source ~/NewVulkanDirectory/VulkanSDK/1.x.yyy.z/setup-env.sh`.  
 
 ## Environment Variable Persistence
-For the above environment settings to be present at every Ubuntu 18.04 login sessions, you need to open your `.profile` file in your home directory, append `source $HOME/NewVulkanDirectory/VulkanSDK/1.x.yy.z/setup-env.sh` to the file, save `.profile` followed by `source ~/.profile`.
+For the above environment settings to be present at every Ubuntu 18.04 login sessions, you need to open your `.profile` file in your home directory, append `source $HOME/NewVulkanDirectory/VulkanSDK/1.x.yyy.z/setup-env.sh` to the file, save `.profile` followed by `source ~/.profile`.
 
 ## Motivation
 I created this Python 3.6 script to help me install the LunarG Vulkan SDK as its version evolves. I hope it can benefit fellow Vulkan users. Please raise an issue if you notice any correction/improvement is needed. Thanks.   
